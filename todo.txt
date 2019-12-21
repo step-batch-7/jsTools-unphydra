@@ -1,5 +1,18 @@
-v0.1->
+    v 0.1 cut -d delimiter -f number file
+v0.1-> 
 create directories test,src
-create cut.js
+create cut.js as main
+create optionLib.js in src library
 connect main src test with the require and exports
 test connection is working
+add apptest
+
+  generateCutMessage->
+  
+  getCutLines->
+  
+  getListOfFileContents->
+  
+  parser-> [note=> only filter and making in correct format not for validation ]
+
+bugs->

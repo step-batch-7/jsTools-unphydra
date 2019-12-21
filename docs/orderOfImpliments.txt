@@ -1,28 +1,41 @@
 order of implements=>
+
 1st set of implements->
-  1. cut -f number file
-  2. cut -f number,number file
-  3. cut -f number-number file
-  4. cut -f number- file
-  5. cut -f -number file
+  versions for first set->
+    v 0.1 cut -d delimiter -f number file
+    v 0.11 cut -d delimiter -f number 
+    v 0.2 cut -f number file
+    v 0.21 cut -f number 
 
 2nd set of implements->
-  1. cut -d delimiter -f number file
-  2. cut -d delimiter -f number,number file
-  3. cut -d delimiter -f number-number file
-  4. cut -d delimiter -f number- file
-  5. cut -d delimiter -f -number file
+  versions for second set->
+    v 0.3 cut -d delimiter -f number,number file
+    v 0.31 cut -d delimiter -f number,number 
+    v 0.4 cut -f number,number file
+    v 0.41 cut -f number,number 
 
 3rd set of implements->
-  1. cut -f number 
-  2. -f number,number 
-  3. cut -f number-number 
-  4. cut -f number- 
-  5. cut -f -number 
+  versions for third set->
+    v 0.5  cut -d delimiter -f number-number file
+    v 0.51 cut -d delimiter -f number-number 
+    v 0.6 cut -f number-number file
+    v 0.61 cut -f number-number 
 
-  4th set of implements->
-  1. cut -d delimiter -f number 
-  2. cut -d delimiter -f number,number 
-  3. cut -d delimiter -f number-number 
-  4. cut -d delimiter -f number- 
-  5. cut -d delimiter -f -number 
+4th set of implements->
+  version for fourth set->
+    v 0.7 cut -d delimiter -f number- file
+    v 0.71 cut -d delimiter -f number- 
+    v 0.8 cut -f number- file
+    v 0.81 cut -f number- 
+
+5th set of implements->
+  version for fifth set->
+    v 0.9 cut -d delimiter -f -number file
+    v 0.91 cut -d delimiter -f -number 
+    v 0.92 cut -f -number file
+    v 1.0 cut -f -number 
+
+
+
+
+
