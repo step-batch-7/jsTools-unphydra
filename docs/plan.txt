@@ -1,0 +1,106 @@
+assumed File is demo.txt
+ a 1,2,3
+ b 1,2,3
+ c 1,2,3
+ d 1,2,3
+ e 1,2,3
+ f 1,2,3
+ g 1,2,3
+
+
+possibilities=>
+  1. if -b and number of byte is given with a space after -b and a file is given, gives the byte position
+  2. if -b and number of byte is given without a space after -b and a file is given, gives the byte position
+  3. if file does not exists then give => cut: [file name]: No such file or directory
+  4. if -b is not given then show how to use
+  5. if list value is not given then show cut: [-cf] list: illegal list value
+
+-----first flow for => cut (-b1 / -b 1) demo.txt-----
+input to the flow-> demo.txt (file name)
+output of the flow-> 
+  a\n
+  b\n
+  c\n
+  d\n
+  e\n
+  f\n
+  g\n
+
+first flow will be cut of demo.txt file with -b and show first byte of each line of the file
+
+-----steps-----
+
+[1.1]=>the last step
+  output->text: lines/strings -> contain the first byte of each line of the file
+    a\n
+    b\n
+    c\n
+    d\n
+    e\n
+    f\n
+    g\n
+  input->array: list of lines -> contain first byte of each line of the file
+    [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ]
+  name-> generateCutMessage(list);
+
+[1.2]=>previous step
+  output->array:list of lines -> contain first byte of each lines of the file
+    [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ]
+  input->array:list of lines -> contain all lines of the file
+    [
+      "a 1,2,3",
+      "b 1,2,3",
+      "c 1,2,3",
+      "d 1,2,3",
+      "e 1,2,3",
+      "f 1,2,3",
+      "g 1,2,3"
+    ]
+  name->getCutLines(list,...args)
+  [notes=> if in the particular byte position does not have anything then give only new line]
+
+[1.3]=> previous step
+  output->array:list of lines->all lines from the file
+    [
+      "a 1,2,3",
+      "b 1,2,3",
+      "c 1,2,3",
+      "d 1,2,3",
+      "e 1,2,3",
+      "f 1,2,3",
+      "g 1,2,3"
+    ]
+  input->string: path of the file
+    "demo.txt"
+  name->getListOfFileContents(path)
+  [notes=> if file does not exists then give error
+  cut: [file name]: No such file or directory]
+
+[1.4] => previous step
+  output->object: path of file, option, option value
+    path: "demo.txt"
+    option: "-b"
+    optionValue: 1
+  [name of file-> "demo.txt" || "./demo.txt" || "../demo.txt"]
+
+  input->array: list of strings from the command lne->process.argv
+      [node,cut.js,-b,1,demo.txt]
+  name->filterFileNameAndOption(argv)
+  [if no option value is given then give cut: [-cf] list: illegal list value]
+  divided

@@ -1,0 +1,28 @@
+order of implements=>
+1st set of implements->
+  1. cut -f number file
+  2. cut -f number,number file
+  3. cut -f number-number file
+  4. cut -f number- file
+  5. cut -f -number file
+
+2nd set of implements->
+  1. cut -d delimiter -f number file
+  2. cut -d delimiter -f number,number file
+  3. cut -d delimiter -f number-number file
+  4. cut -d delimiter -f number- file
+  5. cut -d delimiter -f -number file
+
+3rd set of implements->
+  1. cut -f number 
+  2. -f number,number 
+  3. cut -f number-number 
+  4. cut -f number- 
+  5. cut -f -number 
+
+  4th set of implements->
+  1. cut -d delimiter -f number 
+  2. cut -d delimiter -f number,number 
+  3. cut -d delimiter -f number-number 
+  4. cut -d delimiter -f number- 
+  5. cut -d delimiter -f -number 
