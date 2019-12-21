@@ -1,0 +1,5 @@
+v0.1->
+create directories test,src
+create cut.js
+connect main src test with the require and exports
+test connection is working

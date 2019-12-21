@@ -7,15 +7,7 @@ assumed File is demo.txt
  f 1,2,3
  g 1,2,3
 
-
-possibilities=>
-  1. if -b and number of byte is given with a space after -b and a file is given, gives the byte position
-  2. if -b and number of byte is given without a space after -b and a file is given, gives the byte position
-  3. if file does not exists then give => cut: [file name]: No such file or directory
-  4. if -b is not given then show how to use
-  5. if list value is not given then show cut: [-cf] list: illegal list value
-
------first flow for => cut (-b1 / -b 1) demo.txt-----
+-----first flow-----
 input to the flow-> demo.txt (file name)
 output of the flow-> 
   a\n
@@ -25,8 +17,6 @@ output of the flow->
   e\n
   f\n
   g\n
-
-first flow will be cut of demo.txt file with -b and show first byte of each line of the file
 
 -----steps-----
 
@@ -93,6 +83,15 @@ first flow will be cut of demo.txt file with -b and show first byte of each line
   cut: [file name]: No such file or directory]
 
 [1.4] => previous step
+  output->object: path of file
+                  delime:
+                  fields:
+  input->array:filter of user input
+              [-f 2 demo]
+  name->parser(userInput)
+  [note=>if there is an error then it will print the error]
+
+[1.5] => first step
   output->object: path of file, option, option value
     path: "demo.txt"
     option: "-b"
