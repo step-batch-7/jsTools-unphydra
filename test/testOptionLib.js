@@ -28,4 +28,11 @@ describe("getCutLines", () => {
     const expected = ["a,b,c,d", "a,b,c,d"];
     assert.deepStrictEqual(actual, expected);
   });
+
+  it("should give cut lines for list with tab deliminator and line has tab", () => {
+    const instruction = { delim: "\t", fields: [2] };
+    const actual = getCutLines(["a,b\tc,d", "a,b,c,d"], instruction);
+    const expected = ["c,d", "a,b,c,d"];
+    assert.deepStrictEqual(actual, expected);
+  });
 });

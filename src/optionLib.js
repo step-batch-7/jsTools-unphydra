@@ -9,9 +9,11 @@ const generateCutMessage = function(listOfOutput) {
 const getCutLines = function(list, instruction) {
   const result = [];
   list.forEach(line => {
-    const fields = line.split(instruction.delim);
-    if (fields.length == 1) {
-      result.push(fields[0]);
+    const fieldsOfLine = line.split(instruction.delim);
+    if (fieldsOfLine.length == 1) {
+      result.push(fieldsOfLine[0]);
+    } else {
+      result.push(fieldsOfLine[instruction.fields[0] - 1]);
     }
   });
   return result;
