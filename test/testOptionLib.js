@@ -56,13 +56,13 @@ describe("cut.js", () => {
         fileReader: (givenPath, inFunEncoder) => {
           assert.deepStrictEqual(inFunEncoder, encoder);
           assert.deepStrictEqual(givenPath, path);
-          return "a";
+          return "a\n";
         }
       };
       const encoder = "utf8";
       const path = "somePath";
       const actual = getListOfFileContents(fs, path, encoder);
-      const expected = "a\n";
+      const expected = ["a"];
       assert.deepStrictEqual(actual, expected);
     });
   });
