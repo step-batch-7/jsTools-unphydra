@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { stdin } = process;
 const performCut = require("./src/performCut");
 
 const main = function() {
@@ -11,8 +12,8 @@ const main = function() {
     }
   };
 
-  const myFs = { fileReader: fs.readFile };
-  performCut(myFs, process.argv, printer);
+  const myFs = { fileReader: fs.readFile, fileExists: fs.existsSync };
+  performCut(myFs, process.argv, printer, stdin);
 };
 
 main();
