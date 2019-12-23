@@ -9,7 +9,7 @@ describe("cut.js", () => {
   describe("generateCutMessage", () => {
     it("should give a string for the string in a list", () => {
       const actual = generateCutMessage(["abcde"]);
-      const expected = "abcde\n";
+      const expected = "abcde";
       assert.deepStrictEqual(actual, expected);
     });
 
@@ -21,7 +21,7 @@ describe("cut.js", () => {
 
     it("should give string for multiple string of list", () => {
       const actual = generateCutMessage(["abcde", "fghij", "klmno"]);
-      const expected = "abcde\nfghij\nklmno\n";
+      const expected = "abcde\nfghij\nklmno";
       assert.deepStrictEqual(actual, expected);
     });
   });
