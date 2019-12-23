@@ -2,7 +2,8 @@ const assert = require("chai").assert;
 const {
   generateCutMessage,
   getCutLines,
-  getListOfFileContents
+  getListOfFileContents,
+  parser
 } = require("../src/optionLib");
 describe("cut.js", () => {
   describe("generateCutMessage", () => {
@@ -61,6 +62,15 @@ describe("cut.js", () => {
       const path = "somePath";
       const actual = getListOfFileContents(fs, path, encoder);
       const expected = "a";
+      assert.deepStrictEqual(actual, expected);
+    });
+  });
+
+  describe("parser", () => {
+    it("should filter the argument", () => {
+      const args = ["node", "cut,js", "-d", ",", "-f", "2"];
+      const actual = parser(args);
+      const expected = { delim: ",", fields: [2] };
       assert.deepStrictEqual(actual, expected);
     });
   });
