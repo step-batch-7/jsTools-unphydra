@@ -2,7 +2,7 @@ const { generateCutMessage, getCutLines, parser } = require("./optionLib");
 
 const performCutOnReadFile = function(showOutput, parsedValue) {
   return function(error, data) {
-    const listOfLines = data.split("\n").slice(0, -1);
+    const listOfLines = data.split("\n");
     const listOfCutLines = getCutLines(listOfLines, parsedValue);
     const cutLine = generateCutMessage(listOfCutLines);
     showOutput({ cutLine });

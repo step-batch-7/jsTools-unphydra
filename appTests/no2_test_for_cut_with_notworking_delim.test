@@ -1,0 +1,2 @@
+node cut.js -d "-" -f 1 ./data/test.txt
+a,b,c,d,e
