@@ -2,7 +2,6 @@ const assert = require("chai").assert;
 const {
   generateCutMessage,
   getCutLines,
-  getListOfFileContents,
   parser
 } = require("../src/optionLib");
 
