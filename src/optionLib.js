@@ -23,4 +23,12 @@ const getCutLines = function(list, instruction) {
   return result;
 };
 
-module.exports = { generateCutMessage, getCutLines };
+const getListOfFileContents = function(fs, path, encoder) {
+  return fs.fileReader(path, encoder);
+};
+
+module.exports = {
+  generateCutMessage,
+  getCutLines,
+  getListOfFileContents
+};
