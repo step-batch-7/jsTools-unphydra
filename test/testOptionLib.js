@@ -35,4 +35,11 @@ describe("getCutLines", () => {
     const expected = ["c,d", "a,b,c,d"];
     assert.deepStrictEqual(actual, expected);
   });
+
+  it("should give empty cut lines for a field where no char in that line", () => {
+    const instruction = { delim: ",", fields: [5] };
+    const actual = getCutLines(["a,b,c,d", "a,b,c,d"], instruction);
+    const expected = ["", ""];
+    assert.deepStrictEqual(actual, expected);
+  });
 });
