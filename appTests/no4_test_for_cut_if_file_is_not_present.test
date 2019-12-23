@@ -1,0 +1,2 @@
+node cut.js -d "-" -f 1 someFile
+cut: someFile: No such file or directory
