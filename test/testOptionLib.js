@@ -5,6 +5,7 @@ const {
   getListOfFileContents,
   parser
 } = require("../src/optionLib");
+
 describe("cut.js", () => {
   describe("generateCutMessage", () => {
     it("should give a string for the string in a list", () => {
@@ -61,16 +62,16 @@ describe("cut.js", () => {
       const encoder = "utf8";
       const path = "somePath";
       const actual = getListOfFileContents(fs, path, encoder);
-      const expected = "a";
+      const expected = "a\n";
       assert.deepStrictEqual(actual, expected);
     });
   });
 
   describe("parser", () => {
     it("should filter the argument", () => {
-      const args = ["node", "cut,js", "-d", ",", "-f", "2"];
+      const args = ["node", "cut,js", "-d", ",", "-f", "2", "somePath"];
       const actual = parser(args);
-      const expected = { delim: ",", fields: [2] };
+      const expected = { delim: ",", fields: [2], path: "somePath" };
       assert.deepStrictEqual(actual, expected);
     });
   });

@@ -32,7 +32,8 @@ const parser = function(args) {
   const delim = args[indexOfD + 1];
   const indexOfF = args.indexOf("-f");
   const fields = [+args[indexOfF + 1]];
-  return { delim, fields };
+  const path = args[args.length - 1];
+  return { delim, fields, path };
 };
 
 module.exports = {
