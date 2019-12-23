@@ -24,7 +24,10 @@ const getCutLines = function(list, instruction) {
 };
 
 const getListOfFileContents = function(fs, path, encoder) {
-  return fs.fileReader(path, encoder);
+  return fs
+    .fileReader(path, encoder)
+    .split("\n")
+    .slice(0, -1);
 };
 
 const parser = function(args) {
