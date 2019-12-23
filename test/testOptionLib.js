@@ -1,5 +1,5 @@
 const assert = require("chai").assert;
-const { generateCutMessage } = require("../src/optionLib");
+const { generateCutMessage, getCutLines } = require("../src/optionLib");
 
 describe("generateCutMessage", () => {
   it("should give a string for the string in a list", () => {
@@ -17,6 +17,15 @@ describe("generateCutMessage", () => {
   it("should give string for multiple string of list", () => {
     const actual = generateCutMessage(["abcde", "fghij", "klmno"]);
     const expected = "abcde\nfghij\nklmno\n";
+    assert.deepStrictEqual(actual, expected);
+  });
+});
+
+describe("getCutLines", () => {
+  it("should give cut lines for list with tab deliminator and line does not has tab", () => {
+    const instruction = { delim: "\t", fields: [2] };
+    const actual = getCutLines(["a,b,c,d", "a,b,c,d"], instruction);
+    const expected = ["a,b,c,d", "a,b,c,d"];
     assert.deepStrictEqual(actual, expected);
   });
 });
