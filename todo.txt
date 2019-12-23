@@ -14,5 +14,8 @@ add apptest
   getListOfFileContents->
   
   parser-> [note=> only filter and making in correct format not for validation ]
-
+---done--
+v0.11->
+make sudoMain
+implement input from stdin
 bugs->

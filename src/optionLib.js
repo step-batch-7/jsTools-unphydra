@@ -23,25 +23,18 @@ const getCutLines = function(list, instruction) {
   return result;
 };
 
-const getListOfFileContents = function(fs, path, encoder) {
-  return fs
-    .fileReader(path, encoder)
-    .split("\n")
-    .slice(0, -1);
-};
-
 const parser = function(args) {
   const indexOfD = args.indexOf("-d");
   const delim = args[indexOfD + 1];
   const indexOfF = args.indexOf("-f");
   const fields = [+args[indexOfF + 1]];
-  const path = args[args.length - 1];
+  const maxIndex = Math.max(indexOfD, indexOfF);
+  const path = args[maxIndex + 2];
   return { delim, fields, path };
 };
 
 module.exports = {
   generateCutMessage,
   getCutLines,
-  getListOfFileContents,
   parser
 };

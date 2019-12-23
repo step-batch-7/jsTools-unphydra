@@ -50,23 +50,6 @@ describe("cut.js", () => {
     });
   });
 
-  describe("getListOfFileContents", () => {
-    it("should give file contents for given path", () => {
-      const fs = {
-        fileReader: (givenPath, inFunEncoder) => {
-          assert.deepStrictEqual(inFunEncoder, encoder);
-          assert.deepStrictEqual(givenPath, path);
-          return "a\n";
-        }
-      };
-      const encoder = "utf8";
-      const path = "somePath";
-      const actual = getListOfFileContents(fs, path, encoder);
-      const expected = ["a"];
-      assert.deepStrictEqual(actual, expected);
-    });
-  });
-
   describe("parser", () => {
     it("should filter the argument", () => {
       const args = ["node", "cut,js", "-d", ",", "-f", "2", "somePath"];
