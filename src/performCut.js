@@ -36,4 +36,4 @@ const performCut = function(fs, args, showOutput, rl) {
   }
 };
 
-module.exports = performCut;
+module.exports = { performCut, performCutForReadFile, performCutForStdin };

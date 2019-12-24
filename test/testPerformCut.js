@@ -1,6 +1,6 @@
 const assert = require("chai").assert;
 const Events = require("events");
-const performCut = require("../src/performCut");
+const { performCut } = require("../src/performCut");
 
 describe("performCut", () => {
   it("should call callback for readfile", () => {
