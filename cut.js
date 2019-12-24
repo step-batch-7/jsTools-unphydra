@@ -7,7 +7,7 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-
+rl.pause();
 const main = function() {
   const showOutput = function(cutOutput) {
     cutOutput.cutLine && console.log(cutOutput.cutLine);
