@@ -26,26 +26,6 @@ describe("performCut", () => {
     performCut(myfs, argv, showOutput);
   });
 
-  it("should give error if file is not present in the given path", () => {
-    const givenPath = "somePath";
-    const argv = ["-d", ",", "-f", "1", "somePath"];
-
-    const showOutput = function(cutOutput) {
-      assert.deepStrictEqual(
-        cutOutput.errorLine,
-        "cut: somePath: No such file or directory"
-      );
-      assert.isUndefined(cutOutput.cutLine);
-    };
-    const myfs = {
-      fileExists: function(path) {
-        assert.deepStrictEqual(path, givenPath);
-        return false;
-      }
-    };
-    performCut(myfs, argv, showOutput);
-  });
-
   it("should call callback for standerInput", () => {
     const myEmitter = new Events();
     const argv = ["-d", ",", "-f", "1"];
@@ -58,5 +38,74 @@ describe("performCut", () => {
 
     performCut("fs", argv, showOutput, myEmitter);
     myEmitter.emit("line", "a,b");
+  });
+
+  it("should give no such file error if file is not present in the given path", () => {
+    const givenPath = "somePath";
+    const givenEncoding = "utf8";
+    const argv = ["-d", ",", "-f", "1", "somePath"];
+
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(
+        cutOutput.errorLine,
+        "cut: somePath: No such file or directory"
+      );
+      assert.isUndefined(cutOutput.cutLine);
+    };
+    const possibleError = { code: "ENOENT" };
+    const myfs = {
+      fileReader: function(path, encoding, callback) {
+        assert.deepStrictEqual(path, givenPath);
+        assert.deepStrictEqual(encoding, givenEncoding);
+        callback(possibleError, "a\nb\nc");
+      }
+    };
+    performCut(myfs, argv, showOutput);
+  });
+
+  it("should give error reading error if a directory is given", () => {
+    const givenPath = "somePathOfDir";
+    const givenEncoding = "utf8";
+    const argv = ["-d", ",", "-f", "1", "somePathOfDir"];
+
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(
+        cutOutput.errorLine,
+        "cut: Error reading somePathOfDir"
+      );
+      assert.isUndefined(cutOutput.cutLine);
+    };
+    const possibleError = { code: "EISDIR" };
+    const myfs = {
+      fileReader: function(path, encoding, callback) {
+        assert.deepStrictEqual(path, givenPath);
+        assert.deepStrictEqual(encoding, givenEncoding);
+        callback(possibleError, "a\nb\nc");
+      }
+    };
+    performCut(myfs, argv, showOutput);
+  });
+
+  it("should permission denied if a unreadable file is given is given", () => {
+    const givenPath = "unreadableFile";
+    const givenEncoding = "utf8";
+    const argv = ["-d", ",", "-f", "1", "unreadableFile"];
+
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(
+        cutOutput.errorLine,
+        "cut: unreadableFile: Permission denied"
+      );
+      assert.isUndefined(cutOutput.cutLine);
+    };
+    const possibleError = { code: "EACCES" };
+    const myfs = {
+      fileReader: function(path, encoding, callback) {
+        assert.deepStrictEqual(path, givenPath);
+        assert.deepStrictEqual(encoding, givenEncoding);
+        callback(possibleError, "a\nb\nc");
+      }
+    };
+    performCut(myfs, argv, showOutput);
   });
 });
