@@ -1,6 +1,6 @@
 const { generateCutMessage, getCutLines, parser } = require("./optionLib");
 
-const performCutOnReadFile = function(showOutput, parsedValue) {
+const performCutForReadFile = function(showOutput, parsedValue) {
   return function(error, data) {
     const listOfLines = data.split("\n");
     const listOfCutLines = getCutLines(listOfLines, parsedValue);
@@ -9,10 +9,10 @@ const performCutOnReadFile = function(showOutput, parsedValue) {
   };
 };
 
-const performCutOnStdin = function(inst, showOutput, rl) {
+const performCutForStdin = function(parsedValue, showOutput, rl) {
   rl.resume();
   rl.on("line", line => {
-    const listOfCutLines = getCutLines([line], inst);
+    const listOfCutLines = getCutLines([line], parsedValue);
     const cutLine = generateCutMessage(listOfCutLines);
     showOutput({ cutLine });
   });
@@ -21,14 +21,14 @@ const performCutOnStdin = function(inst, showOutput, rl) {
 const performCut = function(fs, args, showOutput, rl) {
   const parsedValue = parser(args);
   if (!parsedValue.path) {
-    performCutOnStdin(parsedValue, showOutput, rl);
+    performCutForStdin(parsedValue, showOutput, rl);
   } else {
     if (!fs.fileExists(parsedValue.path)) {
       const errorLine = `cut: ${parsedValue.path}: No such file or directory`;
       showOutput({ errorLine });
       return;
     }
-    const performCutAfterRead = performCutOnReadFile(
+    const performCutAfterRead = performCutForReadFile(
       showOutput,
       parsedValue
     );
