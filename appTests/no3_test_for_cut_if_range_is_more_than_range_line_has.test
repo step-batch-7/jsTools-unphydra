@@ -1,1 +1,2 @@
 node cut.js -d "," -f 10 ./data/test.txt
+
