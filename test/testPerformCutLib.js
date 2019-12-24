@@ -7,15 +7,20 @@ const {
 
 describe("performCutForStdin", () => {
   it("should read line from line event", () => {
+    let count = 0;
     const myEmitter = new Events();
     myEmitter.resume = () => {};
     const parsedValue = { delim: ",", path: undefined, fields: [1] };
     const showOutput = function(cutOutput) {
-      assert.deepStrictEqual(cutOutput.cutLine, "a");
+      assert.oneOf(cutOutput.cutLine, ["a", "a-b", ""]);
       assert.isUndefined(cutOutput.errorLine);
+      count++;
     };
     performCutForStdin(parsedValue, showOutput, myEmitter);
     myEmitter.emit("line", "a,b");
+    myEmitter.emit("line", "a-b");
+    myEmitter.emit("line", "");
+    assert.deepStrictEqual(count, 3);
   });
 });
 

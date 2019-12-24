@@ -26,6 +26,26 @@ describe("performCut", () => {
     performCut(myfs, argv, showOutput);
   });
 
+  it("should give error if file is not present in the given path", () => {
+    const givenPath = "somePath";
+    const argv = ["-d", ",", "-f", "1", "somePath"];
+
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(
+        cutOutput.errorLine,
+        "cut: somePath: No such file or directory"
+      );
+      assert.isUndefined(cutOutput.cutLine);
+    };
+    const myfs = {
+      fileExists: function(path) {
+        assert.deepStrictEqual(path, givenPath);
+        return false;
+      }
+    };
+    performCut(myfs, argv, showOutput);
+  });
+
   it("should call callback for standerInput", () => {
     const myEmitter = new Events();
     const argv = ["-d", ",", "-f", "1"];

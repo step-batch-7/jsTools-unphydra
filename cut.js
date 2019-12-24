@@ -1,11 +1,10 @@
 const fs = require("fs");
 // const { stdin } = process;
 const readline = require("readline");
-const performCut = require("./src/performCut");
+const { performCut } = require("./src/performCut");
 
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+  input: process.stdin
 });
 rl.pause();
 const main = function() {
