@@ -10,27 +10,29 @@ const performCutForReadFile = function(showOutput, parsedValue, path) {
     EACCES: { message: `cut: ${path}: Permission denied`, code: 1 }
   };
 
-  return function(error, data) {
+  return function(error, contents) {
     if (error) {
       const errorLine = errorList[error.code].message;
       const exitCode = errorList[error.code].code;
       showOutput({ errorLine });
       process.exit(exitCode);
     }
-    const listOfLines = data.split("\n");
-    const listOfCutLines = getCutLines(listOfLines, parsedValue);
-    const cutLine = generateCutMessage(listOfCutLines);
-    showOutput({ cutLine });
+    performCutOperation(contents, parsedValue, showOutput);
   };
 };
 
 const performCutForStdin = function(parsedValue, showOutput, readLine) {
   readLine.resume();
   readLine.on("line", line => {
-    const listOfCutLines = getCutLines([line], parsedValue);
-    const cutLine = generateCutMessage(listOfCutLines);
-    showOutput({ cutLine });
+    performCutOperation(line, parsedValue, showOutput);
   });
+};
+
+const performCutOperation = function(line, parsedValue, showOutput) {
+  const listOfLines = line.split("\n");
+  const listOfCutLines = getCutLines(listOfLines, parsedValue);
+  const cutLine = generateCutMessage(listOfCutLines);
+  showOutput({ cutLine });
 };
 
 const performCut = function(fs, args, showOutput, rl) {
