@@ -27,22 +27,22 @@ describe("cut.js", () => {
   });
 
   describe("getCutLines", () => {
-    it("should give cut lines for list with tab deliminator and line does not has tab", () => {
-      const instruction = { delim: "\t", fields: [2] };
+    it("should give cut lines for list with tab delimiter and line does not has tab", () => {
+      const instruction = { delimiter: "\t", fields: [2] };
       const actual = getCutLines(["a,b,c,d", "a,b,c,d"], instruction);
       const expected = ["a,b,c,d", "a,b,c,d"];
       assert.deepStrictEqual(actual, expected);
     });
 
-    it("should give cut lines for list with tab deliminator and line has tab", () => {
-      const instruction = { delim: "\t", fields: [2] };
+    it("should give cut lines for list with tab delimiter and line has tab", () => {
+      const instruction = { delimiter: "\t", fields: [2] };
       const actual = getCutLines(["a,b\tc,d", "a,b,c,d"], instruction);
       const expected = ["c,d", "a,b,c,d"];
       assert.deepStrictEqual(actual, expected);
     });
 
     it("should give empty cut lines for a field where no char in that line", () => {
-      const instruction = { delim: ",", fields: [5] };
+      const instruction = { delimiter: ",", fields: [5] };
       const actual = getCutLines(["a,b,c,d", "a,b,c,d"], instruction);
       const expected = ["", ""];
       assert.deepStrictEqual(actual, expected);
@@ -53,7 +53,7 @@ describe("cut.js", () => {
     it("should filter the argument", () => {
       const args = ["node", "cut,js", "-d", ",", "-f", "2", "somePath"];
       const actual = parser(args);
-      const expected = { delim: ",", fields: [2], path: "somePath" };
+      const expected = { delimiter: ",", fields: [2], path: "somePath" };
       assert.deepStrictEqual(actual, expected);
     });
   });

@@ -3,7 +3,7 @@ const generateCutMessage = function(listOfOutput) {
 };
 
 const getFields = function(line) {
-  const fieldsOfLine = line.split(this.delim);
+  const fieldsOfLine = line.split(this.delimiter);
   if (fieldsOfLine.length == 1) {
     return fieldsOfLine[0];
   }
@@ -21,12 +21,12 @@ const getCutLines = function(list, instruction) {
 
 const parser = function(args) {
   const indexOfD = args.indexOf("-d");
-  const delim = args[indexOfD + 1];
+  const delimiter = args[indexOfD + 1];
   const indexOfF = args.indexOf("-f");
   const fields = [+args[indexOfF + 1]];
   const maxIndex = Math.max(indexOfD, indexOfF);
   const path = args[maxIndex + 2];
-  return { delim, fields, path };
+  return { delimiter, fields, path };
 };
 
 module.exports = {

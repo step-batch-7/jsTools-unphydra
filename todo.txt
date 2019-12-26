@@ -5,7 +5,7 @@ create cut.js as main
 create optionLib.js in src library
 connect main src test with the require and exports
 test connection is working
-add apptest
+add appTest
 
   generateCutMessage->
   

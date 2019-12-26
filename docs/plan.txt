@@ -84,7 +84,7 @@ output of the flow->
 
 [1.4] => previous step
   output->object: path of file
-                  delime:
+                  delimiter:
                   fields:
   input->array:filter of user input
               [-f 2 demo]

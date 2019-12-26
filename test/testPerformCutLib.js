@@ -10,7 +10,7 @@ describe("performCutForStdin", () => {
     let count = 0;
     const myEmitter = new Events();
     myEmitter.resume = () => {};
-    const parsedValue = { delim: ",", path: undefined, fields: [1] };
+    const parsedValue = { delimiter: ",", path: undefined, fields: [1] };
     const showOutput = function(cutOutput) {
       assert.oneOf(cutOutput.cutLine, ["a", "a-b", ""]);
       assert.isUndefined(cutOutput.errorLine);
@@ -25,8 +25,8 @@ describe("performCutForStdin", () => {
 });
 
 describe("performCutForReadFile", () => {
-  it("should give whole line if line is not splitted by deliminator", () => {
-    const parsedValue = { delim: ",", path: "somePath", fields: [1] };
+  it("should give whole line if line is not splitted by delimiter", () => {
+    const parsedValue = { delimiter: ",", path: "somePath", fields: [1] };
     const showOutput = function(cutOutput) {
       assert.deepStrictEqual(cutOutput.cutLine, "a-b");
       assert.isUndefined(cutOutput.errorLine);
