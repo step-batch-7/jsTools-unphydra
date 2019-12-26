@@ -2,7 +2,8 @@ const assert = require("chai").assert;
 const Events = require("events");
 const {
   performCutForReadFile,
-  performCutForStdin
+  performCutForStdin,
+  performCutOperation
 } = require("../src/performCut");
 
 describe("performCutForStdin", () => {
@@ -33,5 +34,23 @@ describe("performCutForReadFile", () => {
     };
     const line = "a-b";
     performCutForReadFile(showOutput, parsedValue)(null, line);
+  });
+});
+
+describe("performCutOperation", () => {
+  it("should give 1st filed if delim can divided the string into two", () => {
+    let count = 0;
+    const line = "a,b";
+    const parsedValue = {
+      delimiter: ",",
+      fields: [2]
+    };
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(cutOutput.cutLine, "b");
+      assert.isUndefined(cutOutput.errorLine);
+      count++;
+    };
+    performCutOperation(line, parsedValue, showOutput);
+    assert.deepStrictEqual(count, 1);
   });
 });
