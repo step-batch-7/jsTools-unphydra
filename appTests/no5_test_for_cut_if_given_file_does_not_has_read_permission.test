@@ -1,2 +1,3 @@
-(touch foo; chmod -r foo; node cut.js -d "," -f 2 foo; rm foo)
+(touch foo; chmod -r foo; node cut.js -d "," -f 2 foo;echo $?; rm foo;)
 cut: foo: Permission denied
+1
