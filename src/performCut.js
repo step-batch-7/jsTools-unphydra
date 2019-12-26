@@ -20,9 +20,9 @@ const performCutForReadFile = function(showOutput, parsedValue, path) {
   };
 };
 
-const performCutForStdin = function(parsedValue, showOutput, rl) {
-  rl.resume();
-  rl.on("line", line => {
+const performCutForStdin = function(parsedValue, showOutput, readLine) {
+  readLine.resume();
+  readLine.on("line", line => {
     const listOfCutLines = getCutLines([line], parsedValue);
     const cutLine = generateCutMessage(listOfCutLines);
     showOutput({ cutLine });
