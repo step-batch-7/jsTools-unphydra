@@ -2,16 +2,20 @@ const { generateCutMessage, getCutLines, parser } = require("./optionLib");
 
 const performCutForReadFile = function(showOutput, parsedValue, path) {
   const errorList = {
-    ENOENT: `cut: ${path}: No such file or directory`,
-    EISDIR: `cut: Error reading ${path}`,
-    EACCES: `cut: ${path}: Permission denied`
+    ENOENT: {
+      message: `cut: ${path}: No such file or directory`,
+      code: 1
+    },
+    EISDIR: { message: `cut: Error reading ${path}`, code: 74 },
+    EACCES: { message: `cut: ${path}: Permission denied`, code: 1 }
   };
 
   return function(error, data) {
     if (error) {
-      const errorLine = errorList[error.code];
+      const errorLine = errorList[error.code].message;
+      const exitCode = errorList[error.code].code;
       showOutput({ errorLine });
-      return;
+      process.exit(exitCode);
     }
     const listOfLines = data.split("\n");
     const listOfCutLines = getCutLines(listOfLines, parsedValue);
