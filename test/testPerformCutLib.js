@@ -39,18 +39,13 @@ describe("performCutForReadFile", () => {
 
 describe("performCutOperation", () => {
   it("should give 1st filed if delim can divided the string into two", () => {
-    let count = 0;
     const line = "a,b";
     const parsedValue = {
       delimiter: ",",
       fields: [2]
     };
-    const showOutput = function(cutOutput) {
-      assert.deepStrictEqual(cutOutput.cutLine, "b");
-      assert.isUndefined(cutOutput.errorLine);
-      count++;
-    };
-    performCutOperation(line, parsedValue, showOutput);
-    assert.deepStrictEqual(count, 1);
+    const actual = performCutOperation(line, parsedValue);
+    const expected = "b";
+    assert.deepStrictEqual(actual, expected);
   });
 });
