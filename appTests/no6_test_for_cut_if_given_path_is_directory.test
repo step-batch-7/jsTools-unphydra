@@ -1,0 +1,2 @@
+(mkdir foo2; node cut.js -d "," -f 2 foo2; rmdir foo2)
+cut: Error reading foo2
