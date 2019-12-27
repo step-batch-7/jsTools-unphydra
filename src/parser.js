@@ -20,7 +20,7 @@ const parser = function(args) {
   const fields = [+args[indexOfF + 1]];
   const maxIndex = Math.max(indexOfD, indexOfF);
   const path = args[maxIndex + 2];
-  return { delimiter, fields, path, errorLine };
+  return { delimiter, fields, path, errorLine, exitCode };
 };
 
 module.exports = { parser };

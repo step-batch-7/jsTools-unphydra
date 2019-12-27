@@ -43,8 +43,8 @@ const performCutOperation = function(line, parsedValue) {
 const performCut = function(fs, args, showOutput, readLine) {
   const parsedValue = parser(args);
   if (parsedValue.errorLine) {
-    let { errorLine } = parsedValue;
-    return showOutput({ errorLine });
+    let { errorLine, exitCode } = parsedValue;
+    return showOutput({ errorLine, exitCode });
   }
   if (!parsedValue.path) {
     performCutForStdin(parsedValue, showOutput, readLine);
