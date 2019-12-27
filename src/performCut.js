@@ -1,4 +1,5 @@
-const { generateCutMessage, getCutLines, parser } = require("./optionLib");
+const { generateCutMessage, getCutLines } = require("./optionLib");
+const { parser } = require("./parser");
 
 const performCutForReadFile = function(showOutput, parsedValue) {
   return function(error, contents) {

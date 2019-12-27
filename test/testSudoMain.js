@@ -13,14 +13,10 @@ describe("performCut", () => {
       assert.isUndefined(cutOutput.errorLine);
     };
     const myfs = {
-      fileReader: function(path, encoding, callback) {
+      readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(null, "a\nb\nc");
-      },
-      fileExists: function(path) {
-        assert.deepStrictEqual(path, givenPath);
-        return true;
       }
     };
     performCut(myfs, argv, showOutput);
@@ -54,7 +50,7 @@ describe("performCut", () => {
     };
     const possibleError = { code: "ENOENT" };
     const myfs = {
-      fileReader: function(path, encoding, callback) {
+      readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError, "a\nb\nc");
@@ -77,7 +73,7 @@ describe("performCut", () => {
     };
     const possibleError = { code: "EISDIR" };
     const myfs = {
-      fileReader: function(path, encoding, callback) {
+      readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError, "a\nb\nc");
@@ -100,7 +96,7 @@ describe("performCut", () => {
     };
     const possibleError = { code: "EACCES" };
     const myfs = {
-      fileReader: function(path, encoding, callback) {
+      readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError, "a\nb\nc");

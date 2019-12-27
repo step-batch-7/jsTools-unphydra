@@ -1,9 +1,5 @@
 const assert = require("chai").assert;
-const {
-  generateCutMessage,
-  getCutLines,
-  parser
-} = require("../src/optionLib");
+const { generateCutMessage, getCutLines } = require("../src/optionLib");
 
 describe("cut.js", () => {
   describe("generateCutMessage", () => {
@@ -45,15 +41,6 @@ describe("cut.js", () => {
       const instruction = { delimiter: ",", fields: [5] };
       const actual = getCutLines(["a,b,c,d", "a,b,c,d"], instruction);
       const expected = ["", ""];
-      assert.deepStrictEqual(actual, expected);
-    });
-  });
-
-  describe("parser", () => {
-    it("should filter the argument", () => {
-      const args = ["node", "cut,js", "-d", ",", "-f", "2", "somePath"];
-      const actual = parser(args);
-      const expected = { delimiter: ",", fields: [2], path: "somePath" };
       assert.deepStrictEqual(actual, expected);
     });
   });
