@@ -5,6 +5,7 @@ const performCutForReadFile = function(showOutput, parsedValue) {
   return function(error, contents) {
     if (error) {
       callOnError(error, showOutput, parsedValue.path);
+      return;
     }
     const cutLine = performCutOperation(contents, parsedValue);
     showOutput({ cutLine });
@@ -22,8 +23,7 @@ const callOnError = function(error, showOutput, path) {
   };
   const errorLine = errorList[error.code].message;
   const exitCode = errorList[error.code].code;
-  showOutput({ errorLine });
-  process.exit(exitCode);
+  showOutput({ errorLine, exitCode });
 };
 
 const performCutForStdin = function(parsedValue, showOutput, readLine) {
@@ -42,6 +42,10 @@ const performCutOperation = function(line, parsedValue) {
 
 const performCut = function(fs, args, showOutput, readLine) {
   const parsedValue = parser(args);
+  if (parsedValue.errorLine) {
+    let { errorLine } = parsedValue;
+    return showOutput({ errorLine });
+  }
   if (!parsedValue.path) {
     performCutForStdin(parsedValue, showOutput, readLine);
   } else {

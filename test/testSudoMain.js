@@ -53,7 +53,7 @@ describe("performCut", () => {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
-        callback(possibleError, "a\nb\nc");
+        callback(possibleError);
       }
     };
     performCut(myfs, argv, showOutput);
@@ -76,7 +76,7 @@ describe("performCut", () => {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
-        callback(possibleError, "a\nb\nc");
+        callback(possibleError);
       }
     };
     performCut(myfs, argv, showOutput);
@@ -99,9 +99,21 @@ describe("performCut", () => {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
-        callback(possibleError, "a\nb\nc");
+        callback(possibleError);
       }
     };
     performCut(myfs, argv, showOutput);
+  });
+
+  it("should give usages if no option is given", () => {
+    const argv = ["node", "cut.js"];
+    const showOutput = function(cutOutput) {
+      assert.deepStrictEqual(
+        cutOutput.errorLine,
+        "usage: cut -b list [-n] [file ...]\n       cut -c list [file ...]\n       cut -f list [-s] [-d delim] [file ...]"
+      );
+      assert.isUndefined(cutOutput.cutLine);
+    };
+    performCut({}, argv, showOutput, {});
   });
 });
