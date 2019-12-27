@@ -9,8 +9,10 @@ const errorHandler = function(type) {
 const parser = function(args) {
   let delimiter = "\t";
   let errorLine = "";
+  let exitCode;
   if (args.length == 2) {
     errorLine = errorHandler("showUsages");
+    exitCode = 1;
   }
   const indexOfD = args.indexOf("-d");
   delimiter = args[indexOfD + 1];
