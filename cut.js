@@ -11,8 +11,7 @@ const main = function() {
     cutOutput.cutLine != undefined && console.log(cutOutput.cutLine);
     cutOutput.errorLine != undefined && console.error(cutOutput.errorLine);
   };
-  const myFs = { fileReader: fs.readFile, fileExists: fs.existsSync };
-  performCut(myFs, process.argv, showOutput, readLine);
+  performCut(fs, process.argv, showOutput, readLine);
 };
 
 main();

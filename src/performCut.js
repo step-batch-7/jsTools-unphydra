@@ -1,9 +1,9 @@
 const { generateCutMessage, getCutLines, parser } = require("./optionLib");
 
-const performCutForReadFile = function(showOutput, parsedValue, path) {
+const performCutForReadFile = function(showOutput, parsedValue) {
   return function(error, contents) {
     if (error) {
-      callOnError(error, showOutput, path);
+      callOnError(error, showOutput, parsedValue.path);
     }
     const cutLine = performCutOperation(contents, parsedValue);
     showOutput({ cutLine });
@@ -39,17 +39,16 @@ const performCutOperation = function(line, parsedValue) {
   return generateCutMessage(listOfCutLines);
 };
 
-const performCut = function(fs, args, showOutput, rl) {
+const performCut = function(fs, args, showOutput, readLine) {
   const parsedValue = parser(args);
   if (!parsedValue.path) {
-    performCutForStdin(parsedValue, showOutput, rl);
+    performCutForStdin(parsedValue, showOutput, readLine);
   } else {
     const performCutAfterRead = performCutForReadFile(
       showOutput,
-      parsedValue,
-      parsedValue.path
+      parsedValue
     );
-    fs.fileReader(parsedValue.path, "utf8", performCutAfterRead);
+    fs.readFile(parsedValue.path, "utf8", performCutAfterRead);
   }
 };
 
