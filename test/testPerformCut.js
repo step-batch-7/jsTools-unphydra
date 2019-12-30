@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const { performCut } = require('../src/performCut');
 
 describe('sudoMain test', () => {
+  afterEach(() => {sinon.restore;});
   describe('performCut', () => {
     it('should call callback for readFile', () => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];

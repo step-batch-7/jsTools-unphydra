@@ -48,13 +48,13 @@ const performCut = function(IOInterface, args, showOutput) {
   }
   if (!parsedValue.path) {
     performCutForStdin(parsedValue, showOutput, IOInterface.readLine);
-  } else {
-    const performCutAfterRead = performCutForReadFile(
-      showOutput,
-      parsedValue
-    );
-    IOInterface.fs.readFile(parsedValue.path, 'utf8', performCutAfterRead);
+    return;
   }
+  const performCutAfterRead = performCutForReadFile(
+    showOutput,
+    parsedValue
+  );
+  IOInterface.fs.readFile(parsedValue.path, 'utf8', performCutAfterRead);
 };
 
 module.exports = {
