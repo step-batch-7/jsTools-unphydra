@@ -1,18 +1,18 @@
 const { generateCutMessage, getCutLines } = require('./optionLib');
 const { parser } = require('./parser');
 
-const performCutForReadFile = function(showOutput, parsedValue) {
+const performCutForReadFile = function(onCompletion, parsedValue) {
   return function(error, contents) {
     if (error) {
-      callOnError(error, showOutput, parsedValue.path);
+      callOnError(error, onCompletion, parsedValue.path);
       return;
     }
     const cutLine = performCutOperation(contents, parsedValue);
-    showOutput({ cutLine });
+    onCompletion({ cutLine });
   };
 };
 
-const callOnError = function(error, showOutput, path) {
+const callOnError = function(error, onCompletion, path) {
   const errorList = {
     ENOENT: {
       message: `cut: ${path}: No such file or directory`,
@@ -23,14 +23,14 @@ const callOnError = function(error, showOutput, path) {
   };
   const errorLine = errorList[error.code].message;
   const exitCode = errorList[error.code].code;
-  showOutput({ errorLine, exitCode });
+  onCompletion({ errorLine, exitCode });
 };
 
-const performCutForStdin = function(parsedValue, showOutput, readLine) {
+const performCutForStdin = function(parsedValue, onCompletion, readLine) {
   readLine.resume();
   readLine.on('line', line => {
     const cutLine = performCutOperation(line, parsedValue);
-    showOutput({ cutLine });
+    onCompletion({ cutLine });
   });
 };
 
