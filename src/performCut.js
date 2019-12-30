@@ -1,5 +1,5 @@
-const { generateCutMessage, getCutLines } = require("./optionLib");
-const { parser } = require("./parser");
+const { generateCutMessage, getCutLines } = require('./optionLib');
+const { parser } = require('./parser');
 
 const performCutForReadFile = function(showOutput, parsedValue) {
   return function(error, contents) {
@@ -28,32 +28,32 @@ const callOnError = function(error, showOutput, path) {
 
 const performCutForStdin = function(parsedValue, showOutput, readLine) {
   readLine.resume();
-  readLine.on("line", line => {
+  readLine.on('line', line => {
     const cutLine = performCutOperation(line, parsedValue);
     showOutput({ cutLine });
   });
 };
 
 const performCutOperation = function(line, parsedValue) {
-  const listOfLines = line.split("\n");
+  const listOfLines = line.split('\n');
   const listOfCutLines = getCutLines(listOfLines, parsedValue);
   return generateCutMessage(listOfCutLines);
 };
 
-const performCut = function(fs, args, showOutput, readLine) {
+const performCut = function(IOInterface, args, showOutput) {
   const parsedValue = parser(args);
   if (parsedValue.errorLine) {
-    let { errorLine, exitCode } = parsedValue;
+    const { errorLine, exitCode } = parsedValue;
     return showOutput({ errorLine, exitCode });
   }
   if (!parsedValue.path) {
-    performCutForStdin(parsedValue, showOutput, readLine);
+    performCutForStdin(parsedValue, showOutput, IOInterface.readLine);
   } else {
     const performCutAfterRead = performCutForReadFile(
       showOutput,
       parsedValue
     );
-    fs.readFile(parsedValue.path, "utf8", performCutAfterRead);
+    IOInterface.fs.readFile(parsedValue.path, 'utf8', performCutAfterRead);
   }
 };
 
