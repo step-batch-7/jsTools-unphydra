@@ -4,7 +4,8 @@ const { parser } = require('./parser');
 const performCutForReadFile = function(onCompletion, parsedValue) {
   return function(error, contents) {
     if (error) {
-      callOnError(error, onCompletion, parsedValue.path);
+      const fileTypeError = callOnError(error, parsedValue.path);
+      onCompletion(fileTypeError);
       return;
     }
     const cutLine = performCutOperation(contents, parsedValue);
@@ -12,7 +13,7 @@ const performCutForReadFile = function(onCompletion, parsedValue) {
   };
 };
 
-const callOnError = function(error, onCompletion, path) {
+const callOnError = function(error, path) {
   const errorList = {
     ENOENT: {
       message: `cut: ${path}: No such file or directory`,
@@ -23,7 +24,7 @@ const callOnError = function(error, onCompletion, path) {
   };
   const errorLine = errorList[error.code].message;
   const exitCode = errorList[error.code].code;
-  onCompletion({ errorLine, exitCode });
+  return {errorLine, exitCode};
 };
 
 const performCutForStdin = function(parsedValue, onCompletion, readLine) {
