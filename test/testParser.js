@@ -20,7 +20,8 @@ describe('parser', () => {
       delimiter: ',',
       fields: [expectedField],
       path: 'somePath',
-      errorLine: ''
+      errorLine: '',
+      exitCode: undefined
     };
     assert.deepStrictEqual(actual, expected);
   });

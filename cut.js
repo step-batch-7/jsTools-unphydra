@@ -9,7 +9,7 @@ readLine.pause();
 const main = function () {
   const showOutput = function (cutOutput) {
     cutOutput.cutLine !== undefined &&
-      process.stdout.write(cutOutput.cutLine);
+      process.stdout.write(cutOutput.cutLine + '\n');
     cutOutput.errorLine !== undefined &&
       process.stderr.write(cutOutput.errorLine + '\n');
     process.exitCode = cutOutput.exitCode;

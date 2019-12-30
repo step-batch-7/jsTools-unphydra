@@ -29,8 +29,8 @@ const parser = function (args) {
   }
   delimiter = getDelimiter(args);
   const fields = getFields(args);
-  const pathIndexDec = 1;
-  const path = args[args.length - pathIndexDec];
+  const pathIndexDec = 2;
+  const path = args[ args.indexOf('-f') + pathIndexDec];
   return { delimiter, fields, path, errorLine, exitCode };
 };
 

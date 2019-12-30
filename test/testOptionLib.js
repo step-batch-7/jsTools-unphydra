@@ -40,7 +40,7 @@ describe('cut.js', () => {
     });
 
     it('should give empty for a field where no char in that field', () => {
-      const expectedField = 2;
+      const expectedField = 5;
       const instruction = { delimiter: ',', fields: [expectedField] };
       const actual = getCutLines(['a,b,c,d', 'a,b,c,d'], instruction);
       const expected = ['', ''];

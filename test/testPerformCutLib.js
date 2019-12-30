@@ -9,7 +9,7 @@ const {
 describe('performCutForStdin', () => {
   it('should read line from line event', () => {
     let count = 0;
-    const expectedField = 1, expectedCount = 3;
+    const expectedField = 1, expectedCount = 2;
     const myEmitter = new Events();
     myEmitter.resume = () => {};
     const parsedValue = { delimiter: ',',

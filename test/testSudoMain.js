@@ -12,14 +12,14 @@ describe('performCut', () => {
       assert.deepStrictEqual(cutOutput.cutLine, 'a\nb\nc');
       assert.isUndefined(cutOutput.errorLine);
     };
-    const myfs = {
+    const fs = {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(null, 'a\nb\nc');
       }
     };
-    performCut(myfs, argv, showOutput);
+    performCut({fs}, argv, showOutput);
   });
 
   it('should call callback for standerInput', () => {
@@ -32,7 +32,7 @@ describe('performCut', () => {
     };
     myEmitter.resume = () => {};
 
-    performCut('fs', argv, showOutput, myEmitter);
+    performCut({fs: {}, readLine: myEmitter}, argv, showOutput );
     myEmitter.emit('line', 'a,b');
   });
 
@@ -49,14 +49,14 @@ describe('performCut', () => {
       assert.isUndefined(cutOutput.cutLine);
     };
     const possibleError = { code: 'ENOENT' };
-    const myfs = {
+    const fs = {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError);
       }
     };
-    performCut(myfs, argv, showOutput);
+    performCut({fs}, argv, showOutput);
   });
 
   it('should give error reading error if a directory is given', () => {
@@ -72,14 +72,14 @@ describe('performCut', () => {
       assert.isUndefined(cutOutput.cutLine);
     };
     const possibleError = { code: 'EISDIR' };
-    const myfs = {
+    const fs = {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError);
       }
     };
-    performCut(myfs, argv, showOutput);
+    performCut({fs}, argv, showOutput);
   });
 
   it('should permission denied if a unreadable file is given is given', () => {
@@ -95,14 +95,14 @@ describe('performCut', () => {
       assert.isUndefined(cutOutput.cutLine);
     };
     const possibleError = { code: 'EACCES' };
-    const myfs = {
+    const fs = {
       readFile: function(path, encoding, callback) {
         assert.deepStrictEqual(path, givenPath);
         assert.deepStrictEqual(encoding, givenEncoding);
         callback(possibleError);
       }
     };
-    performCut(myfs, argv, showOutput);
+    performCut({fs}, argv, showOutput);
   });
 
   it('should give usages if no option is given', () => {
