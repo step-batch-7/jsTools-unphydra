@@ -58,8 +58,5 @@ const performCut = function(IOInterface, args, showOutput) {
 };
 
 module.exports = {
-  performCut,
-  performCutForReadFile,
-  performCutForStdin,
-  performCutOperation
+  performCut
 };
