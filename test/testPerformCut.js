@@ -5,11 +5,21 @@ const { performCut } = require('../src/performCut');
 describe('sudoMain test', () => {
   afterEach(() => {sinon.restore;});
   describe('performCut', () => {
-    it('should call callback for readFile', (done) => {
+    it('should call callback for readFile with no new line at end', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];
       const showOutput = sinon.fake(() => done());
       const fs = {
         readFile: sinon.fake.yields(null, 'a,b\nb\nc')
+      };
+      performCut({fs}, argv, showOutput);
+      assert.ok(showOutput.calledWithExactly({cutLine: 'a\nb\nc'}));
+    });
+
+    it('should call callback for readFile with new line at end', (done) => {
+      const argv = ['-d', ',', '-f', '1', 'somePath'];
+      const showOutput = sinon.fake(() => done());
+      const fs = {
+        readFile: sinon.fake.yields(null, 'a,b\nb\nc\n')
       };
       performCut({fs}, argv, showOutput);
       assert.ok(showOutput.calledWithExactly({cutLine: 'a\nb\nc'}));

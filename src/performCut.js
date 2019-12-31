@@ -43,7 +43,9 @@ const callOnFinish = function(parsedValue, showOutput){
 };
 
 const performCutOperation = function(line, parsedValue) {
+
   const listOfLines = line.split('\n');
+  listOfLines.slice().pop() ? listOfLines : listOfLines.pop();
   const listOfCutLines = getCutLines(listOfLines, parsedValue);
   return generateCutMessage(listOfCutLines);
 };
