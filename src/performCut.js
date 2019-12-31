@@ -32,6 +32,16 @@ const performCutForStdin = function(readLine, onCompletion) {
   });
 };
 
+const callOnFinish = function(parsedValue, showOutput){
+  return function({error, line}) {
+    if(error){
+      return showOutput(error);
+    }
+    const cutLine = performCutOperation(line, parsedValue);
+    showOutput({cutLine});
+  };
+};
+
 const performCutOperation = function(line, parsedValue) {
   const listOfLines = line.split('\n');
   const listOfCutLines = getCutLines(listOfLines, parsedValue);
@@ -44,21 +54,14 @@ const performCut = function(IOInterface, args, showOutput) {
     const { errorLine, exitCode } = parsedValue;
     return showOutput({ errorLine, exitCode });
   }
-
-  const callOnFinish = function({error, line}) {
-    if(error){
-      return showOutput(error);
-    }
-    const cutLine = performCutOperation(line, parsedValue);
-    showOutput({cutLine});
-  };
-
+  const onReadComplete = callOnFinish(parsedValue, showOutput);
+  
   if (!parsedValue.path) {
-    performCutForStdin(IOInterface.readLine, callOnFinish);
+    performCutForStdin(IOInterface.readLine, onReadComplete);
     return;
   }
   const performCutAfterRead = performCutForReadFile(
-    parsedValue.path, callOnFinish
+    parsedValue.path, onReadComplete
   );
   IOInterface.fs.readFile(parsedValue.path, 'utf8', performCutAfterRead);
 };
