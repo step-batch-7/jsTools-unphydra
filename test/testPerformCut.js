@@ -5,9 +5,9 @@ const { performCut } = require('../src/performCut');
 describe('sudoMain test', () => {
   afterEach(() => {sinon.restore;});
   describe('performCut', () => {
-    it('should call callback for readFile', () => {
+    it('should call callback for readFile', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       const fs = {
         readFile: sinon.fake.yields(null, 'a,b\nb\nc')
       };
@@ -15,11 +15,11 @@ describe('sudoMain test', () => {
       assert.ok(showOutput.calledWithExactly({cutLine: 'a\nb\nc'}));
     });
 
-    it('should call callback for standerInput', () => {
+    it('should call callback for standerInput', (done) => {
       const argv = ['-d', ',', '-f', '1'];
       const myEmitter = {};
       myEmitter.on = sinon.fake.yields('a,b');
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       myEmitter.resume = () => {};
       performCut({fs: {}, readLine: myEmitter}, argv, showOutput );
       assert.ok(showOutput.calledWithExactly({cutLine: 'a'}));
@@ -27,9 +27,9 @@ describe('sudoMain test', () => {
       sinon.assert.calledOnce(myEmitter.on);
     });
 
-    it('should give no such file error if file is not present', () => {
+    it('should give no such file error if file is not present', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       const possibleError = { code: 'ENOENT' };
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
@@ -42,9 +42,9 @@ describe('sudoMain test', () => {
       sinon.assert.calledOnce(showOutput);
     });
 
-    it('should give reading error if a directory is given', () => {
+    it('should give reading error if a directory is given', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePathOfDir'];
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       const possibleError = { code: 'EISDIR' };
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
@@ -57,9 +57,9 @@ describe('sudoMain test', () => {
       sinon.assert.calledOnce(showOutput);
     });
 
-    it('should permission denied if a unreadable file is given', () => {
+    it('should permission denied if a unreadable file is given', (done) => {
       const argv = ['-d', ',', '-f', '1', 'unreadableFile'];
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       const possibleError = { code: 'EACCES' };
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
@@ -72,9 +72,9 @@ describe('sudoMain test', () => {
       sinon.assert.calledOnce(showOutput);
     });
 
-    it('should give usages if no option is given', () => {
+    it('should give usages if no option is given', (done) => {
       const argv = ['node', 'cut.js'];
-      const showOutput = sinon.fake();
+      const showOutput = sinon.fake(() => done());
       performCut({}, argv, showOutput, {});
       const expected = {
         errorLine: 'usage: cut -b list [-n] [file ...]\n' +
