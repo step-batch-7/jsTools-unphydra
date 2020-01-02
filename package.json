@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "allTest": "nyc mocha; ./runAppTest.sh appTests/*.test"
+    "allTest": "nyc mocha; ./runAppTest.sh appTests/*.test",
+    "lint": "curl -s  https://raw.githubusercontent.com/blpabhishek/eslintrc-config/master/.eslintrc.json -o .eslintrc.json && npx eslint src"
   },
   "author": "",
   "license": "ISC",
