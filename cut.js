@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 const fs = require('fs');
 const readline = require('readline');
 const { performCut } = require('./src/performCut');
@@ -14,7 +15,8 @@ const main = function () {
       process.stderr.write(cutOutput.errorLine + '\n');
     process.exitCode = cutOutput.exitCode;
   };
-  performCut({fs, readLine}, process.argv, showOutput);
+  const args = process.argv.slice(2);
+  performCut({fs, readLine}, args, showOutput);
 };
 
 main();

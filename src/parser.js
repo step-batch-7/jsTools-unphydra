@@ -1,37 +1,124 @@
-const errorHandler = function (type) {
+/* eslint-disable no-magic-numbers */
+const errorHandler = function(type, option) {
   const errorList = {
     showUsages:
-      'usage: cut -b list [-n] [file ...]\n'
-      + '       cut -c list [file ...]\n'
-      + '       cut -f list [-s] [-d delim] [file ...]'
+    `usage: cut -b list [-n] [file ...]
+       cut -c list [file ...]
+       cut -f list [-s] [-d delim] [file ...]`,
+    illegalOption: `cut: illegal option -- ${option}\n` +
+      `usage: cut -b list [-n] [file ...]
+       cut -c list [file ...]
+       cut -f list [-s] [-d delim] [file ...]`,
+    badDelim: 'cut: bad delimiter',
+    illegalListValue: 'cut: [-cf] list: illegal list value',
+    argumentReq: `cut: option requires an argument -- ${option}\n` +
+    `usage: cut -b list [-n] [file ...]
+       cut -c list [file ...]
+       cut -f list [-s] [-d delim] [file ...]`
   };
   return errorList[type];
 };
 
-const getDelimiter = function (args) {
-  const indexOfDelim = args.indexOf('-d');
-  const delimValueIndexInc = 1;
-  return args[indexOfDelim + delimValueIndexInc];
+const isOption = function(element) {
+  const reg = new RegExp('^-.$');
+  return reg.test(element);
 };
 
-const getFields = function (args) {
-  const indexOfField = args.indexOf('-f');
-  const fieldsValueIndexInc = 1;
-  return [+args[indexOfField + fieldsValueIndexInc]];
+const extractOption = function(element) {
+  const sign = element[0];
+  const char = element[1];
+  const optionValue = element.slice(2);
+  const newOption = sign.concat(char);
+  return{char, newOption, optionValue};
 };
 
-const parser = function (args) {
-  let [delimiter, errorLine, exitCode] = ['\t', ''];
-  const minLength = 2, codeNum = 1;
-  if (args.length === minLength) {
-    errorLine = errorHandler('showUsages');
-    exitCode = codeNum;
+const callOnerror = function(parsedValue, char) {
+  parsedValue.error.errorKey = 'illegalOption';
+  parsedValue.error.option = char;
+  Object.freeze(parsedValue.error);
+  return parsedValue;
+};
+
+const checkForOption = function(optionsList, parsedValue, element) {
+  const {char, newOption, optionValue} = extractOption(element);
+  parsedValue.lastOption = char;
+  if(!optionValue){
+    parsedValue.optionChoice = true;
   }
-  delimiter = getDelimiter(args);
-  const fields = getFields(args);
-  const pathIndexDec = 2;
-  const path = args[ args.indexOf('-f') + pathIndexDec];
-  return { delimiter, fields, path, errorLine, exitCode };
+  if(Object.keys(optionsList).includes(newOption)){
+    parsedValue[optionsList[newOption]] = optionValue;
+    parsedValue.lastOptionOfList = optionsList[newOption];
+    return parsedValue;
+  }
+  return callOnerror(parsedValue, char);
 };
 
-module.exports = { parser };
+const reducer = function(optionsList, parsedValue, element) {
+  if(parsedValue.optionChoice) {
+    parsedValue[parsedValue.lastOptionOfList] = element;
+    parsedValue.optionChoice = false;
+    return parsedValue;
+  }
+  if(isOption(element)){
+    return checkForOption(optionsList, parsedValue, element);
+  }
+  parsedValue.files.push(element);
+  Object.freeze(parsedValue);
+  return parsedValue;
+};
+
+const parser = function(optionsList, args){
+  let parsedValue = {error: {}, files: []};
+  parsedValue = args.reduce(reducer.bind(null, optionsList), parsedValue);
+  if(parsedValue.optionChoice){
+    parsedValue.error.errorKey = 'argumentReq';
+    parsedValue.error.option = parsedValue.lastOption;
+  }
+  return parsedValue;
+};
+
+const isInvalidDelim = function(value) {
+  return value && (value ==='' || value.length > 1);
+};
+
+const isInvalidField = function(value) {
+  const reg = new RegExp('^[0-9,-]+$');
+  return value && !reg.test(value);
+};
+
+const getErrorType = function(parsedValue) {
+  const errorKey = parsedValue.error.errorKey;
+  const errOption = parsedValue.error.option;
+  const errorLine = errorHandler(errorKey, errOption);
+  return {errorLine};
+};
+
+const isOptionValError = function(parsedValue) {
+  const delimError = isInvalidDelim(parsedValue.delimiter) && 'badDelim' ;
+  const fieldError = isInvalidField(parsedValue.fields) && 'illegalListValue';
+  return delimError || fieldError;
+};
+
+const isFieldUndefined = function(parsedValue) {
+  return !parsedValue.fields && 'showUsages';
+};
+
+const isError = function(parsedValue) {
+  return isOptionValError(parsedValue) || isFieldUndefined(parsedValue);
+};
+
+const cutParser = function(args) {
+  const optionsList = {'-d': 'delimiter', '-f': 'fields'};
+  const parsedValue = parser(optionsList, args);
+  if(parsedValue.error.errorKey){
+    return getErrorType(parsedValue);
+  }
+  if(isError(parsedValue)){
+    const errorLine = errorHandler(isError(parsedValue));
+    return {errorLine};
+  }
+  const delimiter = parsedValue.delimiter || '\t';
+  return {delimiter, fields: parsedValue.fields, files: parsedValue.files};
+};
+
+module.exports = cutParser;

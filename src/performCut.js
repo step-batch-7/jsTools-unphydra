@@ -1,5 +1,6 @@
+/* eslint-disable no-magic-numbers */
 const { generateCutMessage, getCutLines } = require('./optionLib');
-const { parser } = require('./parser');
+const cutParser = require('./parser');
 
 const performCutForReadFile = function(path, onCompletion) {
   return function(error, contents) {
@@ -51,21 +52,21 @@ const performCutOperation = function(line, parsedValue) {
 };
 
 const performCut = function(IOInterface, args, showOutput) {
-  const parsedValue = parser(args);
+  const parsedValue = cutParser(args);
   if (parsedValue.errorLine) {
     const { errorLine, exitCode } = parsedValue;
     return showOutput({ errorLine, exitCode });
   }
   const onReadComplete = callOnFinish(parsedValue, showOutput);
   
-  if (!parsedValue.path) {
+  if (!parsedValue.files[0]) {
     performCutForStdin(IOInterface.readLine, onReadComplete);
     return;
   }
   const performCutAfterRead = performCutForReadFile(
-    parsedValue.path, onReadComplete
+    parsedValue.files[0], onReadComplete
   );
-  IOInterface.fs.readFile(parsedValue.path, 'utf8', performCutAfterRead);
+  IOInterface.fs.readFile(parsedValue.files[0], 'utf8', performCutAfterRead);
 };
 
 module.exports = {

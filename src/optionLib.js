@@ -9,7 +9,7 @@ const getFields = function (line) {
   if (fieldsOfLine.length === reqFieldIndex) {
     return fieldsOfLine[firstFieldIndex];
   }
-  const reqField = this.fields[firstFieldIndex] - reqFieldIndex;
+  const reqField = this.fields - reqFieldIndex;
   if (!fieldsOfLine[reqField]) {
     fieldsOfLine[reqField] = '';
   }
