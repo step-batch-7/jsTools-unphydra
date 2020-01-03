@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 const { generateCutMessage, getCutLines } = require('./optionLib');
 const cutParser = require('./parser');
 
@@ -51,6 +50,7 @@ const performCutOperation = function(line, parsedValue) {
   return generateCutMessage(listOfCutLines);
 };
 
+/* eslint-disable no-magic-numbers */
 const performCut = function(IOInterface, args, showOutput) {
   const parsedValue = cutParser(args);
   if (parsedValue.errorLine) {
@@ -68,6 +68,7 @@ const performCut = function(IOInterface, args, showOutput) {
   );
   IOInterface.fs.readFile(parsedValue.files[0], 'utf8', performCutAfterRead);
 };
+/* eslint-enable no-magic-numbers */
 
 module.exports = {
   performCut

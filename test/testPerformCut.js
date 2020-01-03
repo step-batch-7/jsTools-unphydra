@@ -3,7 +3,9 @@ const sinon = require('sinon');
 const { performCut } = require('../src/performCut');
 
 describe('sudoMain test', () => {
-  afterEach(() => {sinon.restore;});
+  afterEach(() => {
+    sinon.restore;
+  });
   describe('performCut', () => {
     it('should call callback for readFile with no new line at end', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];

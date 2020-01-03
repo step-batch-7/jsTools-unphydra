@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 const errorHandler = function(type, option) {
   const errorList = {
     showUsages:
@@ -24,6 +23,7 @@ const isOption = function(element) {
   return reg.test(element);
 };
 
+/* eslint-disable no-magic-numbers */
 const extractOption = function(element) {
   const sign = element[0];
   const char = element[1];
@@ -31,6 +31,7 @@ const extractOption = function(element) {
   const newOption = sign.concat(char);
   return{char, newOption, optionValue};
 };
+/* eslint-enable no-magic-numbers */
 
 const callOnerror = function(parsedValue, char) {
   parsedValue.error.errorKey = 'illegalOption';
@@ -53,7 +54,7 @@ const checkForOption = function(optionsList, parsedValue, element) {
   return callOnerror(parsedValue, char);
 };
 
-const reducer = function(optionsList, parsedValue, element) {
+const operationOnElement = function(optionsList, parsedValue, element) {
   if(parsedValue.optionChoice) {
     parsedValue[parsedValue.lastOptionOfList] = element;
     parsedValue.optionChoice = false;
@@ -69,7 +70,8 @@ const reducer = function(optionsList, parsedValue, element) {
 
 const parser = function(optionsList, args){
   let parsedValue = {error: {}, files: []};
-  parsedValue = args.reduce(reducer.bind(null, optionsList), parsedValue);
+  const operationOnEachElement = operationOnElement.bind(null, optionsList);
+  parsedValue = args.reduce(operationOnEachElement, parsedValue);
   if(parsedValue.optionChoice){
     parsedValue.error.errorKey = 'argumentReq';
     parsedValue.error.option = parsedValue.lastOption;
@@ -78,7 +80,8 @@ const parser = function(optionsList, args){
 };
 
 const isInvalidDelim = function(value) {
-  return value && (value ==='' || value.length > 1);
+  const one = 1;
+  return value && (value ==='' || value.length > one);
 };
 
 const isInvalidField = function(value) {
@@ -86,7 +89,7 @@ const isInvalidField = function(value) {
   return value && !reg.test(value);
 };
 
-class ErrorInParser{
+class ErrorChecker{
   constructor(parsedValue){
     this.parsedValue = parsedValue;
   }
@@ -116,7 +119,7 @@ class ErrorInParser{
 const cutParser = function(args) {
   const optionsList = {'-d': 'delimiter', '-f': 'fields'};
   const parsedValue = parser(optionsList, args);
-  const errorManager = new ErrorInParser(parsedValue);
+  const errorManager = new ErrorChecker(parsedValue);
   if(parsedValue.error.errorKey){
     return errorManager.getErrorType();
   }
