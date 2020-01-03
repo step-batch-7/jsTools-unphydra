@@ -1,5 +1,5 @@
-const errorHandler = function(type, option) {
-  const errorList = {
+const errorMessageHandler = function(type, option) {
+  const errorMessageList = {
     showUsages:
     `usage: cut -b list [-n] [file ...]
        cut -c list [file ...]
@@ -15,10 +15,10 @@ const errorHandler = function(type, option) {
        cut -c list [file ...]
        cut -f list [-s] [-d delim] [file ...]`
   };
-  return errorList[type];
+  return errorMessageList[type];
 };
 
-const isOption = function(element) {
+const isItAOption = function(element) {
   const reg = new RegExp('^-.+$');
   return reg.test(element);
 };
@@ -33,7 +33,7 @@ const extractOption = function(element) {
 };
 /* eslint-enable no-magic-numbers */
 
-const callOnerror = function(parsedValue, char) {
+const callOnErrorInOptions = function(parsedValue, char) {
   parsedValue.error.errorKey = 'illegalOption';
   parsedValue.error.option = char;
   Object.freeze(parsedValue.error);
@@ -51,7 +51,7 @@ const checkForOption = function(optionsList, parsedValue, element) {
     parsedValue.lastOptionOfList = optionsList[newOption];
     return parsedValue;
   }
-  return callOnerror(parsedValue, char);
+  return callOnErrorInOptions(parsedValue, char);
 };
 
 const operationOnElement = function(optionsList, parsedValue, element) {
@@ -60,7 +60,7 @@ const operationOnElement = function(optionsList, parsedValue, element) {
     parsedValue.optionChoice = false;
     return parsedValue;
   }
-  if(isOption(element)){
+  if(isItAOption(element)){
     return checkForOption(optionsList, parsedValue, element);
   }
   parsedValue.files.push(element);
@@ -96,7 +96,7 @@ class ErrorChecker{
   getErrorType() {
     const errorKey = this.parsedValue.error.errorKey;
     const errOption = this.parsedValue.error.option;
-    const errorLine = errorHandler(errorKey, errOption);
+    const errorLine = errorMessageHandler(errorKey, errOption);
     return {errorLine};
   }
 
@@ -124,7 +124,7 @@ const cutParser = function(args) {
     return errorManager.getErrorType();
   }
   if(errorManager.isError()){
-    const errorLine = errorHandler(errorManager.isError());
+    const errorLine = errorMessageHandler(errorManager.isError());
     return {errorLine};
   }
   const delimiter = parsedValue.delimiter || '\t';
