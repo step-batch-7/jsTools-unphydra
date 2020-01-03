@@ -20,7 +20,7 @@ const errorHandler = function(type, option) {
 };
 
 const isOption = function(element) {
-  const reg = new RegExp('^-.$');
+  const reg = new RegExp('^-.+$');
   return reg.test(element);
 };
 
@@ -86,35 +86,42 @@ const isInvalidField = function(value) {
   return value && !reg.test(value);
 };
 
-const getErrorType = function(parsedValue) {
-  const errorKey = parsedValue.error.errorKey;
-  const errOption = parsedValue.error.option;
-  const errorLine = errorHandler(errorKey, errOption);
-  return {errorLine};
-};
+class ErrorInParser{
+  constructor(parsedValue){
+    this.parsedValue = parsedValue;
+  }
+  getErrorType() {
+    const errorKey = this.parsedValue.error.errorKey;
+    const errOption = this.parsedValue.error.option;
+    const errorLine = errorHandler(errorKey, errOption);
+    return {errorLine};
+  }
 
-const isOptionValError = function(parsedValue) {
-  const delimError = isInvalidDelim(parsedValue.delimiter) && 'badDelim' ;
-  const fieldError = isInvalidField(parsedValue.fields) && 'illegalListValue';
-  return delimError || fieldError;
-};
+  isOptionValError() {
+    const delimError = 
+    isInvalidDelim(this.parsedValue.delimiter) && 'badDelim' ;
+    const fieldError = 
+    isInvalidField(this.parsedValue.fields) && 'illegalListValue';
+    return delimError || fieldError;
+  }
 
-const isFieldUndefined = function(parsedValue) {
-  return !parsedValue.fields && 'showUsages';
-};
+  isFieldUndefined() {
+    return !this.parsedValue.fields && 'showUsages';
+  }
 
-const isError = function(parsedValue) {
-  return isOptionValError(parsedValue) || isFieldUndefined(parsedValue);
-};
-
+  isError() {
+    return this.isOptionValError() || this.isFieldUndefined();
+  }
+}
 const cutParser = function(args) {
   const optionsList = {'-d': 'delimiter', '-f': 'fields'};
   const parsedValue = parser(optionsList, args);
+  const errorManager = new ErrorInParser(parsedValue);
   if(parsedValue.error.errorKey){
-    return getErrorType(parsedValue);
+    return errorManager.getErrorType();
   }
-  if(isError(parsedValue)){
-    const errorLine = errorHandler(isError(parsedValue));
+  if(errorManager.isError()){
+    const errorLine = errorHandler(errorManager.isError());
     return {errorLine};
   }
   const delimiter = parsedValue.delimiter || '\t';
