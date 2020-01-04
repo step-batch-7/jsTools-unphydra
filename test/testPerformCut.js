@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const { performCut } = require('../src/performCut');
+const {performCut} = require('../src/performCut');
 
 describe('sudoMain test', () => {
   afterEach(() => {
@@ -42,7 +42,7 @@ describe('sudoMain test', () => {
     it('should give no such file error if file is not present', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePath'];
       const showOutput = sinon.fake(() => done());
-      const possibleError = { code: 'ENOENT' };
+      const possibleError = {code: 'ENOENT'};
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
       };
@@ -57,7 +57,7 @@ describe('sudoMain test', () => {
     it('should give reading error if a directory is given', (done) => {
       const argv = ['-d', ',', '-f', '1', 'somePathOfDir'];
       const showOutput = sinon.fake(() => done());
-      const possibleError = { code: 'EISDIR' };
+      const possibleError = {code: 'EISDIR'};
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
       };
@@ -72,7 +72,7 @@ describe('sudoMain test', () => {
     it('should permission denied if a unreadable file is given', (done) => {
       const argv = ['-d', ',', '-f', '1', 'unreadableFile'];
       const showOutput = sinon.fake(() => done());
-      const possibleError = { code: 'EACCES' };
+      const possibleError = {code: 'EACCES'};
       const fs = {
         readFile: sinon.fake.yields(possibleError, null)
       };

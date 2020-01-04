@@ -81,7 +81,7 @@ const parser = function(optionsList, args){
 
 const isInvalidDelim = function(value) {
   const one = 1;
-  return value && (value ==='' || value.length > one);
+  return value && (value === '' || value.length > one);
 };
 
 const isInvalidField = function(value) {
@@ -102,7 +102,7 @@ class ErrorChecker{
 
   isOptionValError() {
     const delimError = 
-    isInvalidDelim(this.parsedValue.delimiter) && 'badDelim' ;
+    isInvalidDelim(this.parsedValue.delimiter) && 'badDelim';
     const fieldError = 
     isInvalidField(this.parsedValue.fields) && 'illegalListValue';
     return delimError || fieldError;

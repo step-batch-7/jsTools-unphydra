@@ -1,4 +1,4 @@
-const { generateCutMessage, getCutLines } = require('./optionLib');
+const {generateCutMessage, getCutLines} = require('./optionLib');
 const cutParser = require('./parser');
 
 const performCutForReadFile = function(path, onCompletion) {
@@ -7,7 +7,7 @@ const performCutForReadFile = function(path, onCompletion) {
       const fileTypeError = callOnError(error, path);
       return onCompletion({error: fileTypeError});
     }
-    onCompletion({ line: contents });
+    onCompletion({line: contents});
   };
 };
 
@@ -17,8 +17,8 @@ const callOnError = function(error, path) {
       message: `cut: ${path}: No such file or directory`,
       code: 1
     },
-    EISDIR: { message: `cut: Error reading ${path}`, code: 74 },
-    EACCES: { message: `cut: ${path}: Permission denied`, code: 1 }
+    EISDIR: {message: `cut: Error reading ${path}`, code: 74},
+    EACCES: {message: `cut: ${path}: Permission denied`, code: 1}
   };
   const errorLine = errorList[error.code].message;
   const exitCode = errorList[error.code].code;
@@ -54,8 +54,8 @@ const performCutOperation = function(line, parsedValue) {
 const performCut = function(IOInterface, args, showOutput) {
   const parsedValue = cutParser(args);
   if (parsedValue.errorLine) {
-    const { errorLine, exitCode } = parsedValue;
-    return showOutput({ errorLine, exitCode });
+    const {errorLine, exitCode} = parsedValue;
+    return showOutput({errorLine, exitCode});
   }
   const onReadComplete = callOnFinish(parsedValue, showOutput);
   

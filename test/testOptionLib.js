@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const { generateCutMessage, getCutLines } = require('../src/optionLib');
+const {generateCutMessage, getCutLines} = require('../src/optionLib');
 
 describe('cut.js', () => {
   describe('generateCutMessage', () => {
@@ -25,7 +25,7 @@ describe('cut.js', () => {
   describe('getCutLines', () => {
     it('should give cut lines for line which does not has tab', () => {
       const expectedField = 2;
-      const instruction = { delimiter: '\t', fields: [expectedField] };
+      const instruction = {delimiter: '\t', fields: [expectedField]};
       const actual = getCutLines(['a,b,c,d', 'a,b,c,d'], instruction);
       const expected = ['a,b,c,d', 'a,b,c,d'];
       assert.deepStrictEqual(actual, expected);
@@ -33,7 +33,7 @@ describe('cut.js', () => {
 
     it('should give cut lines for line which has tab', () => {
       const expectedField = 2;
-      const instruction = { delimiter: '\t', fields: [expectedField] };
+      const instruction = {delimiter: '\t', fields: [expectedField]};
       const actual = getCutLines(['a,b\tc,d', 'a,b,c,d'], instruction);
       const expected = ['c,d', 'a,b,c,d'];
       assert.deepStrictEqual(actual, expected);
@@ -41,7 +41,7 @@ describe('cut.js', () => {
 
     it('should give empty for a field where no char in that field', () => {
       const expectedField = 5;
-      const instruction = { delimiter: ',', fields: [expectedField] };
+      const instruction = {delimiter: ',', fields: [expectedField]};
       const actual = getCutLines(['a,b,c,d', 'a,b,c,d'], instruction);
       const expected = ['', ''];
       assert.deepStrictEqual(actual, expected);

@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 const fs = require('fs');
 const readline = require('readline');
-const { performCut } = require('./src/performCut');
+const {performCut} = require('./src/performCut');
 
 const readLine = readline.createInterface({
   input: process.stdin
