@@ -46,6 +46,13 @@ describe('parser', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
+  it('should give delimiter as tab if no delimiter is given', () => {
+    const args = ['-f', '2', 'somePath'];
+    const actual = cutParser(args).delimiter;
+    const expected = '\t';
+    assert.deepStrictEqual(actual, expected);
+  });
+
   it('should give illegal list value if no number given after -f', () => {
     const args = ['-f', 'a'];
     const actual = cutParser(args).errorLine;
@@ -55,6 +62,17 @@ describe('parser', () => {
 
   it('should filter the argument if option value are given after space', () => {
     const args = ['-d', ',', '-f', '2', 'somePath'];
+    const actual = cutParser(args);
+    const expected = {
+      delimiter: ',',
+      fields: '2',
+      files: ['somePath']
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('should filter if option value are given without space', () => {
+    const args = ['-d,', '-f2', 'somePath'];
     const actual = cutParser(args);
     const expected = {
       delimiter: ',',
