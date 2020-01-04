@@ -81,7 +81,8 @@ const parser = function(optionsList, args){
 
 const isInvalidDelim = function(value) {
   const one = 1;
-  return value && (value === '' || value.length > one);
+  const isValid = value && value.length > one;
+  return value === '' || isValid;
 };
 
 const isInvalidField = function(value) {

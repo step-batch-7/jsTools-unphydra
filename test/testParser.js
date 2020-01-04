@@ -32,7 +32,28 @@ describe('parser', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should filter the argument', () => {
+  it('should give bad delimiter if more than one is given', () => {
+    const args = ['-d', ',,'];
+    const actual = cutParser(args).errorLine;
+    const expected = 'cut: bad delimiter';
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('should give bad delimiter if empty string is given', () => {
+    const args = ['-d', ''];
+    const actual = cutParser(args).errorLine;
+    const expected = 'cut: bad delimiter';
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('should give illegal list value if no number given after -f', () => {
+    const args = ['-f', 'a'];
+    const actual = cutParser(args).errorLine;
+    const expected = 'cut: [-cf] list: illegal list value';
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('should filter the argument if option value are given after space', () => {
     const args = ['-d', ',', '-f', '2', 'somePath'];
     const actual = cutParser(args);
     const expected = {
